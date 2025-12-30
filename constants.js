@@ -19,7 +19,7 @@ const PROJECT_EXIT_DURATION = 1.0 - PROJECT_EXIT_THRESHOLD;
 
 // Project Visual Constants
 const PROJECT_INITIAL_OFFSET_VH = 100;
-const PROJECT_FINAL_SCROLL_VH = isMobile ? -360 : -150;
+const PROJECT_FINAL_SCROLL_VH = isMobile ? -360 : -200;
 
 // Contact Section
 const CONTACT_REVEAL_SCROLL_DISTANCE = isMobile ? 150 : 100;
