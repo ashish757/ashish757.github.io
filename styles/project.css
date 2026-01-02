@@ -232,6 +232,10 @@
     cursor: zoom-out;
     width: 70vw;
 }
+#img-modal img.mobile {
+    max-height: 90vh;
+    width: auto;
+}
 
 
 @media (max-width: 1024px) {
@@ -287,7 +291,7 @@
     #img-modal img:not(.mobile) {
         width: 100vw;
     }
-     #img-modal img.mobile {
+    #img-modal img.mobile {
         width: 80vw;
     }
 }
