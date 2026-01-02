@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const bgSizex = 0 + (scrollY * 0.02) -1;
             const bgSizey = 0 + (scrollY * 0.02) -2;
-            console.log("BG SIZES ", bgSizex, bgSizey); 
+            // console.log("BG SIZES ", bgSizex, bgSizey); 
 
             const phase1 = SCROLL_PHASE_1_END;
             const phase2 = SCROLL_PHASE_2_END; 
@@ -281,9 +281,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-const img = document.querySelectorAll('.project-gallery img, .header-gallery img');
+const img = document.querySelectorAll('.header-gallery img, .project-gallery img');
 const modal = document.querySelector('#img-modal');
 const modalImg = modal.querySelector('img');
+const prevImgBtn = document.getElementById('prev-img');
+const nextImgBtn = document.getElementById('next-img');
+
+console.log("IMAGES ", img);
+
 
 // Helper to close modal
 const closeModal = () => {
@@ -307,12 +312,67 @@ img.forEach((image) => {
 
 // Close when clicking outside the image
 modal.addEventListener('click', (e) => {
-        closeModal();
+    if(e.target !== prevImgBtn && e.target !== nextImgBtn) closeModal()
+         
 });
-
 // Close on Escape key
 window.addEventListener('keydown', (event) => {
     if (event.key === "Escape" && modal.classList.contains('active')) {
         closeModal();
+    }
+});
+
+// const trackdImages = img.filter(image => image.getAttribute('data-project') === 'trackd');
+// const codeCruxImages = img.filter(image => image.getAttribute('data-project') === 'codecrux');
+
+
+
+function nextImageInProject(images) {
+    const currentSrc = modalImg.getAttribute('src');
+    const currentIndex = images.findIndex(image => image.getAttribute('src') === currentSrc);
+    
+    let context = images[currentIndex].getAttribute('data-project');
+    console.log("CURRENT INDEX", currentIndex);
+    if (currentIndex < images.length - 1 && currentIndex >= 0) {
+        if(context == images[currentIndex + 1].getAttribute('data-project')) {
+             const newSrc = images[currentIndex + 1].getAttribute('src');
+            modalImg.setAttribute('src', newSrc);
+            if(images[currentIndex + 1].classList.contains('mobile')){
+                modalImg.classList.add('mobile');
+            }
+            modal.classList.add('active');
+        }
+    }
+}
+
+function prevImageInProject(images) {
+    const currentSrc = modalImg.getAttribute('src');
+    const currentIndex = images.findIndex(image => image.getAttribute('src') === currentSrc);
+    
+    let context = images[currentIndex].getAttribute('data-project');
+    console.log("CURRENT INDEX", currentIndex);
+    if (currentIndex <= images.length - 1  && currentIndex > 0) {
+        if(context == images[currentIndex - 1].getAttribute('data-project')) {
+            const newSrc = images[currentIndex - 1].getAttribute('src');
+            modalImg.setAttribute('src', newSrc);
+            if(images[currentIndex - 1].classList.contains('mobile')){
+                modalImg.classList.add('mobile');
+            }
+            modal.classList.add('active');
+        }
+
+    } 
+}
+
+prevImgBtn.addEventListener('click', prevImageInProject.bind(null, Array.from(img)));
+nextImgBtn.addEventListener('click', nextImageInProject.bind(null, Array.from(img)));
+
+window.addEventListener('keydown', (event) => {
+    if (modal.classList.contains('active')) {
+        if (event.key === "ArrowRight") {
+            nextImageInProject(Array.from(img));
+        } else if (event.key === "ArrowLeft") {
+            prevImageInProject(Array.from(img));
+        }
     }
 });
